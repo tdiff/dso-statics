@@ -19,7 +19,9 @@ struct StaticData
 	std::string name;
 };
 
-class Common
+class
+//__attribute__((visibility ("hidden")))
+Common
 {
 public:
 	static StaticData m_data;
