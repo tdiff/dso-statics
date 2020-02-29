@@ -1,0 +1,1 @@
+void dso_func();
