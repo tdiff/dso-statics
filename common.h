@@ -37,7 +37,9 @@ struct SharedStaticObject
 
 	~SharedStaticObject()
 	{
-		if (--m_count == 0)
+		--m_count;
+		printf("m_count: %zu\n", m_count);
+		if (m_count == 0)
 		{
 			reinterpret_cast<T*>(&m_store)->~T();
 		}
