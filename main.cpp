@@ -13,13 +13,15 @@ void* load_shared()
 {
 	printf("loading shared object\n");
 
+#if 1
 	// Withoud RTLD_DEEPBIND, shared object .ctor looks up symbol from global
 	// scope, which in the end causes double free on static var
-	//return dlopen("./libshared.so", RTLD_LOCAL | RTLD_LAZY);
-	
+	return dlopen("./libshared.so", RTLD_LOCAL | RTLD_LAZY);
+#else
 	// With RTLD_DEEPBIND, shared object uses its own copy of the static variable.
-	// Works similar to making taht static var LOCAL
+	// Works similar to making that static var LOCAL
 	return dlopen("./libshared.so", RTLD_LOCAL | RTLD_LAZY | RTLD_DEEPBIND);
+#endif
 }
 
 int main()
@@ -39,10 +41,12 @@ int main()
 	}
 
 	Common common;
-	printf("main: %s\n", common.m_data.name.c_str());
+	printf("main: %s\n", common.data().name.c_str());
+	printf("main: %p\n", &common.data());
 	dso_func();
 
 	printf("closing shared obj\n");
 	dlclose(handle);
 	printf("leaving main\n");
 }
+
